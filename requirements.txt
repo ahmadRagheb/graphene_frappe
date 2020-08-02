@@ -1,0 +1,2 @@
+frappe
+graphene>=2.0
