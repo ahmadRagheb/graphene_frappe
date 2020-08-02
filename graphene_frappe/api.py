@@ -1,6 +1,6 @@
 import frappe
 import json
-from frappe.api import  get_request_form_data
+from frappe.api import get_request_form_data
 
 import graphene
 from graphene import ObjectType, String, Field, Schema
