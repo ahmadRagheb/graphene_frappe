@@ -18,17 +18,18 @@ class Query(ObjectType):
         doc = frappe.get_doc(doctype, name)
         docdict = doc.as_dict()
         return docdict
-        ToDoGraphene = get_graphene_class(doctype)
 
-        clean = {}
-        for x in docdict:
-            if x in ToDoGraphene._meta.fields:
-                clean[x] = docdict.get(x)
+        # ToDoGraphene = get_graphene_class(doctype)
 
-        suffix = 'Graphene'
-        modelName = doctype.replace(' ','').strip() + suffix
-        user = ToDoGraphene(**clean) if clean else None
-        return user
+        # clean = {}
+        # for x in docdict:
+        #     if x in ToDoGraphene._meta.fields:
+        #         clean[x] = docdict.get(x)
+
+        # suffix = 'Graphene'
+        # modelName = doctype.replace(' ','').strip() + suffix
+        # user = ToDoGraphene(**clean) if clean else None
+        # return user
 
     def resolve_getall(root, info, doctype):
         ll =  frappe.get_all(doctype)
