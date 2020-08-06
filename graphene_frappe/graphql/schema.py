@@ -31,12 +31,14 @@ def get_graphene_class(doctype, suffix='Graphene'):
 
 	return type(doctype.replace(' ','').strip() + suffix, (graphene.ObjectType,), attrs)
 
+class Items (graphene.ObjectType):
+	item_code = graphene.String()
+	qty = graphene.Int()
+	t_warehouse = graphene.String()
+	item_group = graphene.String()
+	idx = graphene.Int()
 
 class StockEntry(graphene.ObjectType):
-	""" we defined the schema for Stock Entry Doctype 
-		by defind the type for each field in doctype and resolve them .
-		to use it in query 
-	"""
 	name = graphene.String()
 	stock_entry_type = graphene.String()
 	title = graphene.String()
@@ -45,56 +47,11 @@ class StockEntry(graphene.ObjectType):
 	purpose = graphene.String()
 	company = graphene.String()
 	posting_date = graphene.Date()
-	items = graphene.String()
+	items = graphene.List(Items)
 
-	def resolve_name(parent, info):
-		return parent.get("name")
-
-	def resolve_stock_entry_type(parent, info):
-		return parent.get("name")
-
-	def resolve_title(parent, info):
-		return parent.get("title")
-
-	def resolve_naming_series(parent, info):
-		return parent.get("naming_series")
-
-	def resolve_outgoing_stock_entry(parent, info):
-		return parent.get("outgoing_stock_entry")
-
-	def resolve_purpose(parent, info):
-		return parent.get("purpose")
-
-	def resolve_company(parent, info):
-		return parent.get("company")
-
-	def resolve_posting_date(parent, info):
-		return parent.get("posting_date")
-
-	def resolve_items(parent, info):
-		items = parent.get("items")
+	def resolve_items(self, args):
+		items = self.get('items')
 		return items
-
-	def as_dict(self, no_nulls = False):
-		def serialize(doc):
-			out = {}
-			for key in doc.__dict__:
-				value = doc.__dict__.get(key)
-
-				if isinstance(value, (list, tuple)):
-					if len(value) > 0 and hasattr(value[0], '__dict__'):
-						value = [serialize(d) for d in value]
-					else:
-						# non standard list object, skip
-						continue
-
-				if (isinstance(value, (frappe.text_type, int, float, datetime, list, tuple))
-					or (not no_nulls and value is None)):
-					out[key] = value
-
-			return out
-
-		return serialize(self)
 
 class Todo(graphene.ObjectType):
 	name = graphene.String()
@@ -105,5 +62,9 @@ class Todo(graphene.ObjectType):
 
 
 class Person(graphene.ObjectType):
-    name = graphene.String()
-    age = graphene.Int()
+	""" we defined the schema for Stock Entry Doctype 
+		by defind the type for each field in doctype and resolve them .
+		to use it in query 
+	"""
+	name = graphene.String()
+	age = graphene.Int()

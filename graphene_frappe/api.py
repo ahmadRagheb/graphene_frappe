@@ -5,7 +5,7 @@ from frappe.api import get_request_form_data
 import graphene
 from graphene import  Schema
 from graphene_frappe.graphql.query import Query
-from graphene_frappe.graphql.mutations import Mutation, MyMutations
+from graphene_frappe.graphql.mutations import Mutation
 
 
 @frappe.whitelist(allow_guest=True)
@@ -18,4 +18,5 @@ def graphql():
     query = data.get("query")
     result = schema.execute(query)
     d = json.dumps(result.data)
-    return '{}'.format(d)
+    # return '{}'.format(d)
+    return d
